@@ -3,14 +3,28 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.jsx",
-    "dev": "nodemon src/app.jsx",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node src/app.ts",
+    "dev": "nodemon src/app.ts",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rathanreddykasam/devTinder.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "tinder for developers",
+  "bugs": {
+    "url": "https://github.com/rathanreddykasam/devTinder/issues"
+  },
+  "homepage": "https://github.com/rathanreddykasam/devTinder#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
   "dependencies": {
     "express": "^5.1.0"
   }
