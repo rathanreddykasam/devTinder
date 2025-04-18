@@ -1,38 +1,29 @@
-import CommonResponse from './models/commonResponse';
-import { Request, Response, NextFunction } from 'express';
+import 'reflect-metadata';
+import { Request, Response } from 'express';
+import { ICommonResponse } from './models/commonResponse';
+import { validateRequest } from './middleware/validate';
+import { UserRequest } from './models/requestDTO/userRequest';
 
 const express = require('express');
 
 const app = express();
+app.use(express.json());
 
-// app.use('/',(req, res) => {
-//     res.send("Hello Rathan!!");
-// })
+app.get('/', (req: Request, res: Response) => {
+	res.send('Hello Rathan!!');
+});
 
 app.get(
 	'/user',
-	(req: Request, res: Response, next: NextFunction) => {
-		// Placeholder middleware; remove if not needed
-		next();
-	},
-	(req: Request, res: Response<CommonResponse>): void => {
-		const { id, name } = req.query as { id?: string; name?: string };
-
-		// Validate query parameters (optional, but recommended)
-		if (!id || !name) {
-			res.status(400).json({
-				success: false,
-				message: 'Missing id or name query parameters',
-			});
-		}
-
-		console.log('Query params:', id, name);
+	validateRequest(UserRequest, 'query'),
+	(req: Request, res: Response<ICommonResponse>): void => {
+		const { id, name } = req.query;
 
 		// Send a response matching CommonResponse
 		res.json({
 			success: true,
 			message: `Hello, ${name}!`,
-			result: { id, name },
+			result: { id: Number(id), name },
 		});
 	}
 );
