@@ -26,13 +26,6 @@ export function validateRequest<T extends object>(
 			});
 		}
 
-		// Attach the validated instance to the request object
-		// if (method === 'body') {
-		// 	req.body = instance;
-		// } else {
-		// 	req.query = instance as any;
-		// }
-
 		next();
 	};
 }

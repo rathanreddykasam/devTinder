@@ -13,14 +13,18 @@ const userAuth = (
 			statusCode: 401,
 			status: 'Unauthorised Request',
 			message:
-				"You are not allowed to access please contact you'r administrator ",
+				'You are not allowed to access please contact your administrator ',
 		});
 		return;
 	}
 	next();
 };
 
-const adminAuth = (req: Request, res: Response, next: NextFunction): void => {
+const adminAuth = (
+	req: Request,
+	res: Response<IErrorResponse>,
+	next: NextFunction
+): void => {
 	const token = 'xyz';
 	const authenticationToken = token === 'xyz';
 	if (!authenticationToken) {
@@ -28,9 +32,8 @@ const adminAuth = (req: Request, res: Response, next: NextFunction): void => {
 			statusCode: 401,
 			status: 'Unauthorised Request',
 			message:
-				"You are not allowed to access please contact you'r administrator ",
+				'You are not allowed to access please contact your administrator ',
 		});
-		return;
 		return;
 	}
 	next();
