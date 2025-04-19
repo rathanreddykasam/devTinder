@@ -46,7 +46,10 @@ app.post(
 app.post(
 	'/signup',
 	validateRequest(UserSignUpRequest),
-	async (req: Request, res: Response<ICommonResponse | IErrorResponse>) => {
+	async (
+		req: Request<UserSignUpRequest>,
+		res: Response<ICommonResponse | IErrorResponse>
+	) => {
 		try {
 			const user = new User({ ...req.body });
 			const data = await user.save();
@@ -61,7 +64,6 @@ app.post(
 		} catch (err: unknown) {
 			const errorMessage =
 				err instanceof Error ? err.message : 'An unknown error occurred';
-			console.log('Something went wrong', errorMessage);
 			res.status(500).send({
 				statusCode: 500,
 				status: 'unsuccessfull',
