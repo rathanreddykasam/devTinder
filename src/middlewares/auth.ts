@@ -1,42 +1,36 @@
 import { NextFunction, Request, Response } from 'express';
-import { IErrorResponse } from '../models/responses/errorResponse';
+import { User } from '../models/schemas/user';
+const jwt = require('jsonwebtoken');
 
-const userAuth = (
+const userAuth = async (
 	req: Request,
-	res: Response<IErrorResponse>,
+	res: Response<string>,
 	next: NextFunction
-): void => {
-	const token = 'xyz';
-	const authenticationToken = token === 'xyz';
-	if (!authenticationToken) {
-		res.status(401).json({
-			statusCode: 401,
-			status: 'Unauthorised Request',
-			message:
-				'You are not allowed to access please contact your administrator ',
-		});
-		return;
+) => {
+	try {
+		const { token } = req.cookies;
+		if (!token) {
+			throw new Error('Invalid Token!');
+		}
+
+		const decodedObj = await jwt.verify(token, 'DEV@Tinder$790');
+		if (!decodedObj) {
+			throw new Error('Invalid Token!');
+		}
+		const { _id } = decodedObj;
+		const user = await User.findById(_id);
+		if (!user) {
+			throw new Error('User not found!');
+		}
+		(req as any).user = user;
+		next();
+	} catch (err: unknown) {
+		const errorMessage =
+			err instanceof Error
+				? err.message
+				: 'Something went wrong! Please try again';
+		res.status(400).send(errorMessage);
 	}
-	next();
 };
 
-const adminAuth = (
-	req: Request,
-	res: Response<IErrorResponse>,
-	next: NextFunction
-): void => {
-	const token = 'xyz';
-	const authenticationToken = token === 'xyz';
-	if (!authenticationToken) {
-		res.status(401).json({
-			statusCode: 401,
-			status: 'Unauthorised Request',
-			message:
-				'You are not allowed to access please contact your administrator ',
-		});
-		return;
-	}
-	next();
-};
-
-export { userAuth, adminAuth };
+export { userAuth };
