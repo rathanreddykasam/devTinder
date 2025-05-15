@@ -1,10 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const { Schema } = mongoose;
-
-interface IUser extends Document {
+export interface IUser extends Document {
 	firstName: string;
 	lastName: string;
 	email: string;

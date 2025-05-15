@@ -22,7 +22,7 @@ const userAuth = async (
 		if (!user) {
 			throw new Error('User not found!');
 		}
-		(req as any).user = user;
+		(req as Request).user = user;
 		next();
 	} catch (err: unknown) {
 		const errorMessage =

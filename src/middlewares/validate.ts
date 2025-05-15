@@ -17,7 +17,9 @@ export function validateRequest<T extends object>(
 		// Cast query parameters to 'any' to work around the type issue with ParsedQs
 		const queryData = method === 'query' ? (data as any) : data;
 		// Convert plain object to class instance
-		const instance = plainToInstance(dto, queryData);
+		const instance = plainToInstance(dto, queryData, {
+			excludeExtraneousValues: true,
+		});
 		const errors = await validate(instance);
 
 		if (errors.length > 0) {
